@@ -1,0 +1,19 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# venv folders
+bin/
+include/
+lib/
+lib64/
+lib64
+pyvenv.cfg
+share/
+
+# personal notes
+asides/
+
+# vim swap files
+*.swp
