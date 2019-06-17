@@ -1,6 +1,6 @@
 Roguelikedev Does the Complete Roguelike Tutorial 2019
 
-!["ID: in rainbow text: 'Roguelikedev does the Complete Roguelike Tutorial' and in gray text in the corner: 'v3.0 2019.6-8', over a grayscale ascii dungeon"](https://i.imgur.com/3MAzEp1.png ")
+!["ID: in rainbow text: 'Roguelikedev does the Complete Roguelike Tutorial' and in gray text in the corner: 'v3.0 2019.6-8', over a grayscale ascii dungeon"](https://i.imgur.com/3MAzEp1.png)
 
 Using the [TCOD Roguelike Tutorial](http://rogueliketutorials.com/tutorials/tcod/) and doing it as part of the [r/roguelikedev](https://www.reddit.com/r/roguelikedev) 2019 summer event
 
