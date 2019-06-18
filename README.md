@@ -6,4 +6,4 @@ I'll be following fairly tightly, as I'm also using Python 3 and tcod, though I'
 
 Dependencies:
  - Python 3
- - tcod (see TCOD Roguelike Tutorial for installing)
+ - tcod v11.0.0 (see TCOD Roguelike Tutorial for installing)
