@@ -2,6 +2,7 @@ import tcod as libtcod
 
 from entity import Entity
 from input_handlers import handle_keys
+from render_functions import clear_all, render_all 
 
 def main():
     screen_width = 80
@@ -23,14 +24,9 @@ def main():
         # Capture key & mouse events
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
-        libtcod.console_set_default_foreground(con, libtcod.white)
-        libtcod.console_put_char(con, player.x, player.y, '@', libtcod.BKGND_NONE)
-        libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0)
-        libtcod.console_set_default_foreground(0, libtcod.white)
-        libtcod.console_put_char(0, player.x, player.y, '@', libtcod.BKGND_NONE)
+        render_all(con, entities, screen_width, screen_height)
         libtcod.console_flush()
-
-        libtcod.console_put_char(con, player.x, player.y, ' ', libtcod.BKGND_NONE)
+        clear_all(con, entities)
 
         action = handle_keys(key)
 
