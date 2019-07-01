@@ -54,6 +54,7 @@ class GameMap:
                 node.h = self.height - node.y - 1
 
             new_room = Rect(node.x, node.y, node.w, node.h)
+            node.center = new_room.center()
             self.create_room(new_room)
             self.rooms.append(new_room)
         else:
@@ -67,80 +68,16 @@ class GameMap:
             node.y = min(left.x, right.x)
             node.w = max(left.x + left.w, right.x + right.w) - node.x
             node.h = max(left.y + left.h, right.y + right.h) - node.y
-          
-            if len(self.rooms) > 1:
-                left_center, right_center = None, None
-                for room in self.rooms:
-                    if libtcod.bsp_contains(left, *room.center()):
-                        left_center = room.center()
-                    if libtcod.bsp_contains(right, *room.center()):
-                        right_center = room.center()
-                if left_center and right_center:
-                    self.connect_rooms(left_center, right_center)
-
-
-
-
-
-
-
+            if randint(0, 1):
+                node.center = left.center
+            else:
+                node.center = right.center
+            # all the work i did and this was the one. :|
+            self.connect_rooms(left.center, right.center)
 
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
         return tiles
-
-    def XXmake_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player):
-        rooms = []
-        num_rooms = 0
-
-        for r in range(max_rooms):
-            # Random width and height
-            w = randint(room_min_size, room_max_size)
-            h = randint(room_min_size, room_max_size)
-            # Random position without going out of the boundaries of the map
-            x = randint(0, map_width - w - 1)
-            y = randint(0, map_height - h - 1)
-
-            # Rect class makes rectangles easier to work with
-            new_room = Rect(x, y, w, h)
-
-            # Run through the other rooms to see if they intersect
-            for other_room in rooms:
-                if new_room.intersect(other_room):
-                    break
-            else:
-                # No intersections, so the room is valid
-
-                # "paint" it to the map's tiles
-                self.create_room(new_room)
-
-                # Center coordinates of new room, will be useful later:
-                new_x, new_y = new_room.center()
-
-                if num_rooms == 0:
-                    # This is the first room, where the player starts
-                    player.x = new_x
-                    player.y = new_y
-                else:
-                    # all rooms after the first:
-                    # connect it to the previous room with a tunnel
-
-                    # Center coordinates of prev room
-                    prev_x, prev_y = rooms[num_rooms - 1].center()
-
-                    # flip a coin
-                    if randint(0, 1) == 1:
-                        # first move horizontally, then vertically
-                        self.create_h_tunnel(prev_x, new_x, prev_y)
-                        self.create_v_tunnel(prev_y, new_y, new_x)
-                    else:
-                        self.create_v_tunnel(prev_y, new_y, prev_x)
-                        self.create_h_tunnel(prev_x, new_x, new_y)
-
-                # Finally, append the new room to the list
-                rooms.append(new_room)
-                num_rooms += 1
-
 
     def create_room(self, room):
         # Go through the tiles in the rectangle and make them passable
@@ -160,15 +97,13 @@ class GameMap:
             self.create_v_tunnel(c1y, c2y, c1x)
             self.create_h_tunnel(c1x, c2x, c2y)
 
-
-
     def create_h_tunnel(self, x1, x2, y):
         for x in range(min(x1, x2), max(x1, x2) + 1):
             try:
                 self.tiles[x][y].blocked = False
                 self.tiles[x][y].block_sight = False
             except IndexError:
-                print("h_tunnel index error")
+                pass
 
     def create_v_tunnel(self, y1, y2, x):
         for y in range(min(y1, y2), max(y1, y2) + 1):
@@ -176,7 +111,7 @@ class GameMap:
                 self.tiles[x][y].blocked = False
                 self.tiles[x][y].block_sight = False
             except IndexError:
-                print("v_tunnel index error")
+                pass
 
     def is_blocked(self, x, y):
         # Left as such because of a promise of further additions

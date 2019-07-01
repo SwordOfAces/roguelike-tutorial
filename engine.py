@@ -13,7 +13,7 @@ def main():
 
     room_max_size = 10
     room_min_size = 6
-    max_rooms = 4
+    max_rooms = 5 # now a depth for the bsp splitting
 
     colors = {
         'dark_wall': libtcod.Color(0, 0, 100),
