@@ -72,13 +72,16 @@ def main():
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
+        player_turn_results = []
+
         if move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
             dest_x, dest_y = player.x + dx, player.y + dy
             if not game_map.is_blocked(dest_x, dest_y):
                 target = get_blocking_entities_at_location(entities, dest_x, dest_y)
                 if target:
-                    print(f"You kick the {target.name} in the shins, to its chagrin!")
+                    attack_results = player.fighter.attack(target)
+                    player_turn_results.extend(attack_results)
                 else:
                     player.move(dx, dy)
                     fov_recompute = True
@@ -90,12 +93,32 @@ def main():
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
+        for result in player_turn_results:
+            message = result.get('message')
+            dead_entity = result.get('dead')
+
+            if message:
+                print(message)
+
+            if dead_entity:
+                pass # We'll do something here in a bit
+
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
                 if entity.ai:
-                    entity.ai.take_turn(player, fov_map, game_map, entities)
+                    enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
 
-            game_state = GameStates.PLAYERS_TURN
+                for result in enemy_turn_results:
+                    message = result.get('message')
+                    dead_entity = result.get('dead')
+
+                    if message:
+                        print(message)
+
+                    if dead_entity:
+                        pass
+            else:
+                game_state = GameStates.PLAYERS_TURN
 
 if __name__ == "__main__":
     main()
