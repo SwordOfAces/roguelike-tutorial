@@ -15,5 +15,8 @@ share/
 # personal notes
 asides/
 
+# Save game file
+savegame.dat
+
 # vim swap files
 *.swp
