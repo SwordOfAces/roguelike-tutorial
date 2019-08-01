@@ -51,5 +51,12 @@ def main_menu(con, background_image, screen_width, screen_height):
     menu(con, '', ['Play new game', 'Continue last game', 'Quit'], 24, screen_width, screen_height)
 
 
+def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
+    options = [f'Constitution (+20 HP {player.fighter.max_hp})',
+               f'Strength (+1 attack, from {player.fighter.power})',
+               f'Agility (+1 defense, from {player.fighter.defense})']
+    menu(con, header, options, menu_width, screen_width, screen_height)
+
+
 def message_box(con, header, width, screen_width, screen_height):
     menu(con, header, [], width, screen_width, screen_height)

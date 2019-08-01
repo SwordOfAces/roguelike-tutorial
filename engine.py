@@ -47,6 +47,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         drop_inventory = action.get('drop_inventory')
         inventory_index = action.get('inventory_index')
         take_stairs = action.get('take_stairs')
+        level_up = action.get('level_up')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
@@ -105,6 +106,17 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             else:
                 message_log.add_message(Message('There are no stairs here.', libtcod.yellow))
 
+        if level_up:
+            if level_up == 'hp':
+                player.fighter.max_hp += 20
+                player.fighter.hp += 20
+            elif level_up == 'str':
+                player.fighter.power += 1
+            elif level_up == 'def':
+                player.fighter.defense += 1
+
+            game_state = previous_game_state
+
         if game_state == GameStates.TARGETING:
             if left_click:
                 target_x, target_y = left_click
@@ -134,6 +146,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             item_dropped = result.get('item_dropped')
             targeting = result.get('targeting')
             targeting_cancelled = result.get('targeting_cancelled')
+            xp = result.get('xp')
 
 
             if message:
@@ -142,6 +155,16 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             if targeting_cancelled:
                 game_state = previous_game_state
                 message_log.add_message(Message('Targeting cancelled'))
+
+            if xp:
+                leveled_up = player.level.add_xp(xp)
+                message_log.add_message(Message(f'You gain {xp} xp.'))
+
+                if leveled_up:
+                    message_log.add_message(Message(
+                        f"Your combat skills grow stronger! You've reached level {player.level.current_level}!", libtcod.yellow))
+                    previous_game_state = game_state
+                    game_state = GameStates.LEVEL_UP
 
             if dead_entity:
                 if dead_entity == player:
