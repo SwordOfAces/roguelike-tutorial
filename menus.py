@@ -58,5 +58,27 @@ def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
     menu(con, header, options, menu_width, screen_width, screen_height)
 
 
+def character_screen(player, char_screen_width, char_screen_height,
+        screen_width, screen_height):
+    window = libtcod.console_new(char_screen_width, char_screen_height)
+
+    libtcod.console_set_default_foreground(window, libtcod.white)
+
+    texts = ['Character Information',
+            f'Level: {player.level.current_level}',
+            f'Experience: {player.level.current_xp}',
+            f'Experience to level: {player.level.experience_to_next_level}',
+            f'Maximum HP: {player.fighter.max_hp}',
+            f'Attack: {player.fighter.power}',
+            f'Defense: {player.fighter.defense}']
+    for i, text in enumerate(texts):
+        libtcod.console_print_rect_ex(window, 0, i+1,
+                char_screen_width, char_screen_height, libtcod.BKGND_NONE,
+                libtcod.LEFT, text)
+        x = screen_width // 2 - char_screen_width // 2
+        y = screen_height // 2 - char_screen_height // 2
+        libtcod.console_blit(window, 0, 0, char_screen_width, char_screen_height, 0, x, y, 1.0, 0.7)
+
+
 def message_box(con, header, width, screen_width, screen_height):
     menu(con, header, [], width, screen_width, screen_height)
