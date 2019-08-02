@@ -61,7 +61,7 @@ class Inventory:
         results = []
 
         if (self.owner.equipment.main_hand == item or
-                self.owner.equipment.offhand == item):
+                self.owner.equipment.off_hand == item):
             self.owner.equipment.toggle_equip(item)
 
         item.x = self.owner.x
