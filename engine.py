@@ -217,7 +217,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                                 Message(f'You equipped the {equipped.name}'))
                     if dequipped:
                         message_log.add_message(
-                                Message(f'You dequipped the {equipped.name}'))
+                                Message(f'You dequipped the {dequipped.name}'))
 
                 game_state = GameStates.ENEMY_TURN
 
